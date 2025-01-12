@@ -1,8 +1,23 @@
 [package]
-name = "sixdegreesofapi"
-version = "0.1.0"
+authors = ["Alessio Artoni"]
+categories = ["web-programming::http-server"]
+description = "HTTP interface to the a Neo4j database, providing data required by sixdegreesoffrontend."
 edition = "2024"
+keywords = ["api", "Neo4j", "PGP", "six-degrees", "six-degrees-of-separation"]
+license = "Unlicense"
+name = "sixdegreesofapi"
+readme = "README.md"
+repository = "https://github.com/aartoni/sixdegreesofapi"
+rust-version = "1.86.0"
+version = "0.1.0"
 
 [dependencies]
 axum = "0.8.1"
 tokio = { version = "1.43.0", features = ["macros", "rt-multi-thread"] }
+
+[lints.clippy]
+cargo = "warn"
+multiple_crate_versions = { level = "allow", priority = 1 }
+module_name_repetitions = { level = "allow", priority = 2 }
+pedantic = "warn"
+nursery = "warn"
