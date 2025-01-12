@@ -1,3 +1,5 @@
+use std::env;
+
 use axum::{Router, routing::get};
 use dotenvy::dotenv;
 use tracing_subscriber::EnvFilter;
@@ -9,9 +11,11 @@ async fn main() -> anyhow::Result<()> {
         .with_max_level(tracing::Level::DEBUG)
         .with_env_filter(EnvFilter::from_default_env())
         .init();
+    let port = env::var("PORT")?;
+    let url = format!("0.0.0.0:{port}");
 
     let app = Router::new().route("/", get(async || "Hello, World!"));
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = tokio::net::TcpListener::bind(url).await.unwrap();
     axum::serve(listener, app).await.unwrap();
     Ok(())
 }
