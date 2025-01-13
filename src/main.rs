@@ -2,7 +2,7 @@ use std::{env, sync::Arc};
 
 use axum::{Router, routing::get};
 use dotenvy::dotenv;
-use sixdegreesofapi::{AppState, DatabaseBuilder};
+use sixdegreesofapi::{paths, AppState, DatabaseBuilder};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
@@ -19,6 +19,7 @@ async fn main() -> anyhow::Result<()> {
 
     let app = Router::new()
         .route("/", get(async || "Hello, World!"))
+        .route("/paths", get(paths))
         .with_state(shared_state);
     let listener = tokio::net::TcpListener::bind(url).await.unwrap();
     axum::serve(listener, app).await.unwrap();
