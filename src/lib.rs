@@ -23,22 +23,22 @@ pub struct Node {
 }
 
 #[derive(Serialize)]
-pub struct ShortestPathResponse {
+pub struct PathResponse {
     paths: Vec<Vec<Node>>,
     source_friendly_name: String,
     target_friendly_name: String,
 }
 
 #[derive(Deserialize)]
-pub struct ShortestPathRequest {
+pub struct PathRequest {
     from: String,
     to: String,
 }
 
 pub async fn paths(
     State(state): State<Arc<AppState>>,
-    req: Query<ShortestPathRequest>,
-) -> (StatusCode, Json<ShortestPathResponse>) {
+    req: Query<PathRequest>,
+) -> (StatusCode, Json<PathResponse>) {
     let query = query("MATCH path=allShortestPaths((:Key {fingerprint: $from})-[*]-(:Key {fingerprint: $to})) RETURN path, length(path) as distance")
         .param("from", req.from.as_str())
         .param("to", req.to.as_str());
