@@ -5,8 +5,10 @@ use std::sync::Arc;
 
 use axum::{Json, extract::State, http::StatusCode};
 pub use db::DatabaseBuilder;
+use serde::Serialize;
 pub use state::AppState;
 
+#[derive(Serialize)]
 pub struct Node {
     id: String,
     title: String,
