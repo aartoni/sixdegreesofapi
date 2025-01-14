@@ -3,9 +3,14 @@ mod state;
 
 use std::sync::Arc;
 
-use axum::{Json, extract::State, http::StatusCode};
+use axum::{
+    Json,
+    extract::{Query, State},
+    http::StatusCode,
+};
 pub use db::DatabaseBuilder;
-use serde::Serialize;
+use neo4rs::query;
+use serde::{Deserialize, Serialize};
 pub use state::AppState;
 
 #[derive(Serialize)]
@@ -24,6 +29,24 @@ pub struct ShortestPathResponse {
     target_friendly_name: String,
 }
 
-pub async fn paths(State(state): State<Arc<AppState>>) -> (StatusCode, Json<ShortestPathResponse>) {
+#[derive(Deserialize)]
+pub struct ShortestPathRequest {
+    from: String,
+    to: String,
+}
+
+pub async fn paths(
+    State(state): State<Arc<AppState>>,
+    req: Query<ShortestPathRequest>,
+) -> (StatusCode, Json<ShortestPathResponse>) {
+    let query = query("MATCH path=allShortestPaths((:Key {fingerprint: $from})-[*]-(:Key {fingerprint: $to})) RETURN path, length(path) as distance")
+        .param("from", req.from.as_str())
+        .param("to", req.to.as_str());
+
+    let _results = state
+        .db
+        .execute(query)
+        .await
+        .expect("Error while reading paths from DB.");
     todo!()
 }
