@@ -1,0 +1,14 @@
+# General
+.env
+.git
+.github
+.gitignore
+LICENSE
+README.md
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Rust
+target
