@@ -1,7 +1,6 @@
 use std::{env, sync::Arc};
 
 use axum::{Router, routing::get};
-use dotenvy::dotenv;
 use sixdegreesofapi::{AppState, DatabaseBuilder, routes::paths};
 use tracing_subscriber::EnvFilter;
 
