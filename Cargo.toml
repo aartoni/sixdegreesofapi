@@ -1,7 +1,7 @@
 [package]
 authors = ["Alessio Artoni"]
 categories = ["web-programming::http-server"]
-description = "HTTP interface to the a Neo4j database, providing data required by sixdegreesoffrontend."
+description = "HTTP interface to a Neo4j database, providing data required by sixdegreesoffrontend."
 edition = "2024"
 keywords = ["api", "Neo4j", "PGP", "six-degrees", "six-degrees-of-separation"]
 license = "Unlicense"
