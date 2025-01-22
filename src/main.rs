@@ -7,7 +7,7 @@ use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    dotenv()?;
+    dotenv().ok();
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::DEBUG)
         .with_env_filter(EnvFilter::from_default_env())
