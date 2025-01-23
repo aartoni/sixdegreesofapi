@@ -20,6 +20,7 @@ pub struct Node {
 }
 
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PathResponse {
     paths: Vec<Vec<Node>>,
     source_friendly_name: String,
