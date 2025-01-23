@@ -22,11 +22,9 @@ async fn main() -> anyhow::Result<()> {
     let db = DatabaseBuilder::from_env()?.build().await?;
     let shared_state = Arc::new(AppState { db });
 
-    let cors_layer = CorsLayer::new().allow_methods([Method::POST]).allow_origin(
-        "https://sixdegreesofpgp.org/"
-            .parse::<HeaderValue>()
-            .unwrap(),
-    );
+    let cors_layer = CorsLayer::new()
+        .allow_methods([Method::POST])
+        .allow_origin(env::var("ORIGIN")?.parse::<HeaderValue>().unwrap());
 
     let app = Router::new()
         .route("/", get(async || "Hello, World!"))
