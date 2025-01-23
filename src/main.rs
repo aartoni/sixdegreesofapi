@@ -6,7 +6,10 @@ use axum::{
     routing::get,
 };
 use sixdegreesofapi::{AppState, DatabaseBuilder, routes::paths};
-use tower_http::{cors::CorsLayer, trace::TraceLayer};
+use tower_http::{
+    cors::{Any, CorsLayer},
+    trace::TraceLayer,
+};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
@@ -23,6 +26,7 @@ async fn main() -> anyhow::Result<()> {
     let shared_state = Arc::new(AppState { db });
 
     let cors_layer = CorsLayer::new()
+        .allow_headers(Any)
         .allow_methods([Method::POST])
         .allow_origin(env::var("ORIGIN")?.parse::<HeaderValue>().unwrap());
 
