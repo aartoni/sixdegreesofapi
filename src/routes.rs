@@ -8,7 +8,7 @@ use axum::{
 use neo4rs::{Path, query};
 use serde::{Deserialize, Serialize};
 
-use crate::state::AppState;
+use crate::{fingerprint::Fingerprint, state::AppState};
 
 #[derive(Serialize)]
 pub struct Node {
@@ -68,8 +68,8 @@ pub async fn paths(
 
     let response = PathResponse {
         paths,
-        source_friendly_name: todo!("Transform into spaced hex"),
-        target_friendly_name: todo!("Transform into spaced hex"),
+        source_friendly_name: req.source.to_spaced_hex(),
+        target_friendly_name: req.target.to_spaced_hex(),
     };
     (StatusCode::OK, response.into())
 }

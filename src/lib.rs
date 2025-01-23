@@ -1,5 +1,6 @@
 mod db;
 mod state;
+mod fingerprint;
 
 pub mod routes;
 
