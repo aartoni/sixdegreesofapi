@@ -1,7 +1,12 @@
 use std::{env, sync::Arc};
 
-use axum::{Router, routing::get};
+use axum::{
+    Router,
+    http::{HeaderValue, Method},
+    routing::get,
+};
 use sixdegreesofapi::{AppState, DatabaseBuilder, routes::paths};
+use tower_http::cors::CorsLayer;
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
@@ -17,9 +22,16 @@ async fn main() -> anyhow::Result<()> {
     let db = DatabaseBuilder::from_env()?.build().await?;
     let shared_state = Arc::new(AppState { db });
 
+    let cors_layer = CorsLayer::new().allow_methods([Method::GET]).allow_origin(
+        "https://sixdegreesofpgp.org/"
+            .parse::<HeaderValue>()
+            .unwrap(),
+    );
+
     let app = Router::new()
         .route("/", get(async || "Hello, World!"))
         .route("/paths", get(paths))
+        .layer(cors_layer)
         .with_state(shared_state);
     let listener = tokio::net::TcpListener::bind(url).await.unwrap();
     axum::serve(listener, app).await.unwrap();
