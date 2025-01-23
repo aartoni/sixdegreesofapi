@@ -28,17 +28,17 @@ pub struct PathResponse {
 
 #[derive(Deserialize)]
 pub struct PathRequest {
-    from: String,
-    to: String,
+    source: String,
+    target: String,
 }
 
 pub async fn paths(
     State(state): State<Arc<AppState>>,
     req: Query<PathRequest>,
 ) -> (StatusCode, Json<PathResponse>) {
-    let query = query("MATCH path=allShortestPaths((:Key {fingerprint: $from})-[*]-(:Key {fingerprint: $to})) RETURN path")
-        .param("from", req.from.as_str())
-        .param("to", req.to.as_str());
+    let query = query("MATCH path=allShortestPaths((:Key {fingerprint: $source})-[*]-(:Key {fingerprint: $target})) RETURN path")
+        .param("source", req.source.as_str())
+        .param("target", req.target.as_str());
 
     let mut results = state
         .db
