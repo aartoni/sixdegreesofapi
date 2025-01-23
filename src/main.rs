@@ -6,7 +6,7 @@ use axum::{
     routing::get,
 };
 use sixdegreesofapi::{AppState, DatabaseBuilder, routes::paths};
-use tower_http::cors::CorsLayer;
+use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
@@ -31,6 +31,7 @@ async fn main() -> anyhow::Result<()> {
     let app = Router::new()
         .route("/", get(async || "Hello, World!"))
         .route("/paths", get(paths))
+        .layer(TraceLayer::new_for_http())
         .layer(cors_layer)
         .with_state(shared_state);
     let listener = tokio::net::TcpListener::bind(url).await.unwrap();
