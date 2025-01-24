@@ -56,7 +56,7 @@ pub async fn paths(
             .into_iter()
             .flat_map(|n| n.get::<String>("fingerprint"))
             .map(|fp| Node {
-                id: String::new(),
+                id: fp.clone(),
                 title: fp,
                 url: String::new(),
                 description: String::new(),
