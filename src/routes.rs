@@ -24,8 +24,8 @@ pub struct Node {
 #[serde(rename_all = "camelCase")]
 pub struct PathResponse {
     paths: Vec<Vec<Node>>,
-    source_friendly_name: String,
-    target_friendly_name: String,
+    source_label: String,
+    target_label: String,
 }
 
 #[derive(Deserialize)]
@@ -70,8 +70,8 @@ pub async fn paths(
 
     let response = PathResponse {
         paths,
-        source_friendly_name: req.source.to_spaced_hex(),
-        target_friendly_name: req.target.to_spaced_hex(),
+        source_label: req.source.to_spaced_hex(),
+        target_label: req.target.to_spaced_hex(),
     };
     (StatusCode::OK, response.into())
 }
