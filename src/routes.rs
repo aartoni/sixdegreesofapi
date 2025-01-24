@@ -13,7 +13,8 @@ use crate::{fingerprint::Fingerprint, state::AppState};
 #[derive(Serialize)]
 pub struct Node {
     id: String,
-    title: String,
+    /// The friendly name of the node as displayed to the user.
+    label: String,
     url: String,
     description: String,
     thumbnail: String,
@@ -57,7 +58,7 @@ pub async fn paths(
             .flat_map(|n| n.get::<String>("fingerprint"))
             .map(|fp| Node {
                 id: fp.clone(),
-                title: fp,
+                label: fp.to_spaced_hex(),
                 url: String::new(),
                 description: String::new(),
                 thumbnail: String::new(),
