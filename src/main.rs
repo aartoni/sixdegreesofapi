@@ -5,7 +5,7 @@ use axum::{
     http::{HeaderValue, Method},
     routing::get,
 };
-use sixdegreesofapi::{AppState, DatabaseBuilder, routes::paths};
+use sixdegreesofapi::{AppState, DatabaseBuilder, routes::paths, util::shutdown_signal};
 use tower_http::{
     cors::{Any, CorsLayer},
     trace::TraceLayer,
@@ -37,6 +37,8 @@ async fn main() -> anyhow::Result<()> {
         .layer(cors_layer)
         .with_state(shared_state);
     let listener = tokio::net::TcpListener::bind(url).await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    axum::serve(listener, app)
+        .with_graceful_shutdown(shutdown_signal())
+        .await?;
     Ok(())
 }
