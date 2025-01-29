@@ -7,7 +7,7 @@ impl Fingerprint for String {
         self.chars()
             .collect::<Vec<_>>()
             .chunks(4)
-            .map(|chunk| chunk.iter().collect::<String>())
+            .map(|chunk| chunk.iter().collect::<Self>())
             .collect::<Vec<_>>()
             .join(" ")
     }
